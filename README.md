@@ -23,5 +23,5 @@
 
 ###
 
-## SIDEK
+## SIDEK v2
 Sensor-Based Intelligent Detector for Waste Material in Ricefield Irrigation (Subak)
