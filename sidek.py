@@ -5,7 +5,7 @@ import requests
 from ultralytics import YOLO
 
 # Configs
-title = "@evandanendraa - sidek v4"
+title = "@evandanendraa - sidek v2"
 model = YOLO("best_ncnn_model", task="detect")
 
 GRID_DETECTION_THRESHOLD = 5
