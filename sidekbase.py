@@ -2,20 +2,13 @@
 import cv2
 import time
 import requests
-from datetime import datetime
 from ultralytics import YOLO
-from sunny import read_light
-from temphumid import read_dht22
 
 # Configs
 title = "@evandanendraa - sidek v2"
 model = YOLO("best_ncnn_model", task="detect")
 
-LOCATION = "Ubung Subak"
-BATTERY_LEVEL = "83%"
-MAX_LUX = 65000
-
-GRID_DETECTION_THRESHOLD = 6
+GRID_DETECTION_THRESHOLD = 5
 CONFIDENCE_THRESHOLD = 0.25
 OPTIMIZE = True
 
@@ -26,6 +19,7 @@ TELEGRAM_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
 fps = 0
 frame_count = 0
 start_time = time.time()
+
 show_class_names = True
 
 # Functions
@@ -39,10 +33,6 @@ def send_telegram_message(message):
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         print(f"Error sending message: {e}")
-
-def lux_to_percentage(lux):
-    percentage = (lux / MAX_LUX) * 100
-    return min(max(0, round(percentage)), 100)
 
 # Codes
 cap = cv2.VideoCapture(0)
@@ -95,26 +85,6 @@ while True:
         cv2.line(frame, (0, y), (width, y), grid_color, grid_thickness)
 
     if len(detected_grids) >= GRID_DETECTION_THRESHOLD:
-        now = datetime.now()
-        formatted_time = now.strftime("%Y-%m-%d %H:%M")
-
-        lux = read_light()
-        luxpercentage = lux_to_percentage(lux)
-
-        temphumid = read_dht22()
-
-        WASTELEVEL = (len(detected_grids) / 9) * 100
-
-        message = (
-            f"SIDEK System Status\n"
-            f"Time : {formatted_time}\n"
-            f"Location : {LOCATION}\n"
-            f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temphumid['temp_c']:.1f}°C, {temphumid['humidity']:.1f}%\n"
-            f"Sunny : {luxpercentage}%\n"
-            f"Battery Level : {BATTERY_LEVEL}\n"
-            )
-
         if not notification_sent:
             text = "GRID LIMIT"
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
@@ -122,7 +92,7 @@ while True:
             y_center = height // 2
             cv2.putText(frame, text, (x_center, y_center), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-            send_telegram_message(message)
+            send_telegram_message(f"[⚠️] LIMIT {len(detected_grids)}/9 | TARGET = {GRID_DETECTION_THRESHOLD}")
             notification_sent = True
     else:
         notification_sent = False
