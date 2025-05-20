@@ -6,7 +6,7 @@ import time
 bus = smbus.SMBus(1)
 I2C_ADDRESS = 0x23
 
-# Codes
+# sunny.py
 POWER_ON = 0x01
 RESET = 0x07
 CONTINUOUS_HIGH_RES_MODE_1 = 0x10
@@ -22,6 +22,3 @@ def read_light():
     raw_value = (data[0] << 8) | data[1]
     lux = raw_value / 1.2  # convert to lux
     return lux
-
-lux = read_light()
-print(f"Current Light Level: {lux:.2f} lux")

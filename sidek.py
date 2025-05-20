@@ -44,7 +44,7 @@ def lux_to_percentage(lux):
     percentage = (lux / MAX_LUX) * 100
     return min(max(0, round(percentage)), 100)
 
-# Codes
+# sidek.py
 cap = cv2.VideoCapture(0)
 notification_sent = False
 

@@ -34,7 +34,7 @@ def send_telegram_message(message):
     except requests.exceptions.RequestException as e:
         print(f"Error sending message: {e}")
 
-# Codes
+# sidekbase.py
 cap = cv2.VideoCapture(0)
 notification_sent = False
 

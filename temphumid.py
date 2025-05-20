@@ -7,7 +7,7 @@ import sys
 # Configs
 dht_device = adafruit_dht.DHT22(board.D18)
 
-# Codes
+# temphumid.py
 def read_dht22():
     try:
         temperature_c = dht_device.temperature
@@ -29,12 +29,3 @@ def read_dht22():
     except Exception as error:
         print(f"Unexpected error: {error}")
         return None
-
-reading = read_dht22()
-if reading:
-    print(
-        f"Temp: {reading['temp_c']:.1f}°C / {reading['temp_f']:.1f}°F | "
-        f"Humidity: {reading['humidity']:.1f}%"
-    )
-else:
-    print("Failed to read sensor. Try again.")
