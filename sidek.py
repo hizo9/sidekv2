@@ -2,10 +2,13 @@
 import cv2
 import time
 import requests
+import adafruit_dht
+import board
+import smbus
+import time
+import sys
 from datetime import datetime
 from ultralytics import YOLO
-from sunny import read_light
-from temphumid import initialize_dht_sensor, get_sensor_readings
 
 # Configs
 title = "@evandanendraa - sidek v2"
@@ -23,12 +26,18 @@ TELEGRAM_BOT_TOKEN = 'SECRET'
 TELEGRAM_CHAT_ID = '-1002575296321'
 TELEGRAM_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
 
+dht_device = adafruit_dht.DHT22(board.D18)
+
+bus = smbus.SMBus(1)
+I2C_ADDRESS = 0x23
+POWER_ON = 0x01
+RESET = 0x07
+CONTINUOUS_HIGH_RES_MODE_1 = 0x10
+
 fps = 0
 frame_count = 0
 start_time = time.time()
 show_class_names = True
-
-dht_device = initialize_dht_sensor()
 
 # Functions
 def send_telegram_message(message):
@@ -45,6 +54,39 @@ def send_telegram_message(message):
 def lux_to_percentage(lux):
     percentage = (lux / MAX_LUX) * 100
     return min(max(0, round(percentage)), 100)
+
+def read_dht22():
+    try:
+        temperature_c = dht_device.temperature
+        humidity = dht_device.humidity
+
+        if temperature_c is not None and humidity is not None:
+            temperature_f = (temperature_c * 9 / 5) + 32
+            return {
+                'temp_c': temperature_c,
+                'temp_f': temperature_f,
+                'humidity': humidity
+            }
+        else:
+            return None
+
+    except RuntimeError as error:
+        print(f"Sensor error: {error.args[0]}")
+        return None
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+        return None
+
+def read_light():
+    bus.write_byte(I2C_ADDRESS, POWER_ON)
+    bus.write_byte(I2C_ADDRESS, RESET)
+    bus.write_byte(I2C_ADDRESS, CONTINUOUS_HIGH_RES_MODE_1)
+    time.sleep(0.15)
+    
+    data = bus.read_i2c_block_data(I2C_ADDRESS, 0x00, 2)
+    raw_value = (data[0] << 8) | data[1]
+    lux = raw_value / 1.2
+    return lux
 
 # sidek.py
 cap = cv2.VideoCapture(0)
@@ -100,11 +142,11 @@ while True:
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M")
 
+        temphumid = read_dht22()
         lux = read_light()
+
         luxpercentage = lux_to_percentage(lux)
-
-        readings = get_sensor_readings(dht_device)
-
+    
         WASTELEVEL = (len(detected_grids) / 9) * 100
 
         message = (
@@ -112,7 +154,7 @@ while True:
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {readings['temperature_c']}°C, {readings['humidity']}%\n"
+            f"Temperature & Humidity : {temphumid['temp_c']:.1f}°C, {temphumid['humidity']:.1f}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
