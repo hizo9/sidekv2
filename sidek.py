@@ -5,7 +5,7 @@ import requests
 from datetime import datetime
 from ultralytics import YOLO
 from sunny import read_light
-from temphumid import read_dht22
+from temphumid import initialize_dht_sensor, get_sensor_readings
 
 # Configs
 title = "@evandanendraa - sidek v2"
@@ -27,6 +27,8 @@ fps = 0
 frame_count = 0
 start_time = time.time()
 show_class_names = True
+
+dht_device = initialize_dht_sensor()
 
 # Functions
 def send_telegram_message(message):
@@ -101,7 +103,7 @@ while True:
         lux = read_light()
         luxpercentage = lux_to_percentage(lux)
 
-        temphumid = read_dht22()
+        readings = get_sensor_readings(dht_device)
 
         WASTELEVEL = (len(detected_grids) / 9) * 100
 
@@ -110,7 +112,7 @@ while True:
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temphumid['temp_c']:.1f}°C, {temphumid['humidity']:.1f}%\n"
+            f"Temperature & Humidity : {readings['temperature_c']}°C, {readings['humidity']}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
