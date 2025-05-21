@@ -65,7 +65,7 @@ def read_dht22():
             'humidity': humidity
         }
     else:
-        return "sumpah ni sensor error mulu"
+        return None
 
 def read_light():
     bus.write_byte(I2C_ADDRESS, POWER_ON)
@@ -143,7 +143,7 @@ while True:
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temphumid['temp']:.1f}°C, {temphumid['humidity']:.1f}%\n"
+            f"Temperature & Humidity : {temphumid["temp"]}°C, {temphumid["humidity"]}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
@@ -156,6 +156,7 @@ while True:
             cv2.putText(frame, text, (x_center, y_center), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
             send_telegram_message(message)
+            time.sleep(3)
             notification_sent = True
     else:
         notification_sent = False
