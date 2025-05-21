@@ -144,9 +144,9 @@ while True:
             f"SIDEK System Status\n"
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
-            f"Waste Level : {WASTELEVEL:.2f}%\n"
+            f"Waste Level : {WASTELEVEL:.1f}%\n"
             f"Temperature & Humidity : {temphumid['temp']:.1f}°C, {temphumid['humidity']:.1f}%\n"
-            f"Sunny : {luxpercentage}%\n"
+            f"Sunny : {lux} Lux, {luxpercentage:.1f}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
 
