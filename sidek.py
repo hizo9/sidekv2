@@ -26,8 +26,6 @@ TELEGRAM_BOT_TOKEN = 'SECRET'
 TELEGRAM_CHAT_ID = '-1002575296321'
 TELEGRAM_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
 
-dht_device = adafruit_dht.DHT22(board.D18)
-
 bus = smbus.SMBus(1)
 I2C_ADDRESS = 0x23
 POWER_ON = 0x01
@@ -54,20 +52,6 @@ def send_telegram_message(message):
 def lux_to_percentage(lux):
     percentage = (lux / MAX_LUX) * 100
     return min(max(0, round(percentage)), 100)
-
-def read_dht22():
-    temperature_c = dht_device.temperature
-    humidity = dht_device.humidity
-
-    if temperature_c is not None and humidity is not None:
-        temperature_f = (temperature_c * 9 / 5) + 32
-        return {
-            'temp_c': temperature_c,
-            'temp_f': temperature_f,
-            'humidity': humidity
-        }
-    else:
-        return None
 
 def read_light():
     bus.write_byte(I2C_ADDRESS, POWER_ON)
@@ -136,6 +120,7 @@ while True:
 
         lux = read_light()
 
+        dht_device = adafruit_dht.DHT22(board.D18)
         temperature_c = dht_device.temperature
         humidity = dht_device.humidity
 
