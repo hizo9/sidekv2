@@ -56,25 +56,17 @@ def lux_to_percentage(lux):
     return min(max(0, round(percentage)), 100)
 
 def read_dht22():
-    try:
-        temperature_c = dht_device.temperature
-        humidity = dht_device.humidity
+    temperature_c = dht_device.temperature
+    humidity = dht_device.humidity
 
-        if temperature_c is not None and humidity is not None:
-            temperature_f = (temperature_c * 9 / 5) + 32
-            return {
-                'temp_c': temperature_c,
-                'temp_f': temperature_f,
-                'humidity': humidity
-            }
-        else:
-            return None
-
-    except RuntimeError as error:
-        print(f"Sensor error: {error.args[0]}")
-        return None
-    except Exception as error:
-        print(f"Unexpected error: {error}")
+    if temperature_c is not None and humidity is not None:
+        temperature_f = (temperature_c * 9 / 5) + 32
+        return {
+            'temp_c': temperature_c,
+            'temp_f': temperature_f,
+            'humidity': humidity
+        }
+    else:
         return None
 
 def read_light():
@@ -143,6 +135,7 @@ while True:
         formatted_time = now.strftime("%Y-%m-%d %H:%M")
 
         temphumid = read_dht22()
+        time.sleep(0.5)
         lux = read_light()
 
         luxpercentage = lux_to_percentage(lux)
