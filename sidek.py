@@ -134,9 +134,10 @@ while True:
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M")
 
-        temphumid = read_dht22()
-        time.sleep(0.5)
         lux = read_light()
+
+        temperature_c = dht_device.temperature
+        humidity = dht_device.humidity
 
         luxpercentage = lux_to_percentage(lux)
     
@@ -147,7 +148,7 @@ while True:
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temphumid['temp_c']:.1f}°C, {temphumid['humidity']:.1f}%\n"
+            f"Temperature & Humidity : {temperature_c}°C, {humidity}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
