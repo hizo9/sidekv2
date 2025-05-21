@@ -16,6 +16,8 @@ model = YOLO("best_ncnn_model", task="detect")
 
 LOCATION = "Ubung Subak"
 BATTERY_LEVEL = "83%"
+
+MIN_LUX = 1
 MAX_LUX = 65000
 
 GRID_DETECTION_THRESHOLD = 6
@@ -52,8 +54,8 @@ def send_telegram_message(message):
         print(f"Error sending message: {e}")
 
 def lux_to_percentage(lux):
-    percentage = (lux / MAX_LUX) * 100
-    return min(max(0, round(percentage)), 100)
+    percentage = (lux - MIN_LUX) / (MAX_LUX - MIN_LUX) * 100
+    return max(0, min(100, percentage))
 
 def read_dht22():
     temperature_c = dht_device.temperature
