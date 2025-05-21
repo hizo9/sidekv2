@@ -26,7 +26,7 @@ TELEGRAM_BOT_TOKEN = 'SECRET'
 TELEGRAM_CHAT_ID = '-1002575296321'
 TELEGRAM_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
 
-dht_device = adafruit_dht.DHT22(board.D18)
+dht_device = adafruit_dht.DHT22(board.D23)
 
 bus = smbus.SMBus(1)
 I2C_ADDRESS = 0x23
