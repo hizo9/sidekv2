@@ -26,6 +26,8 @@ TELEGRAM_BOT_TOKEN = 'SECRET'
 TELEGRAM_CHAT_ID = '-1002575296321'
 TELEGRAM_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
 
+dht_device = adafruit_dht.DHT22(board.D18)
+
 bus = smbus.SMBus(1)
 I2C_ADDRESS = 0x23
 POWER_ON = 0x01
@@ -52,6 +54,18 @@ def send_telegram_message(message):
 def lux_to_percentage(lux):
     percentage = (lux / MAX_LUX) * 100
     return min(max(0, round(percentage)), 100)
+
+def read_dht22():
+    temperature_c = dht_device.temperature
+    humidity = dht_device.humidity
+
+    if temperature_c is not None and humidity is not None:
+        return {
+            'temp': temperature_c,
+            'humidity': humidity
+        }
+    else:
+        return "sumpah ni sensor error mulu"
 
 def read_light():
     bus.write_byte(I2C_ADDRESS, POWER_ON)
@@ -115,25 +129,21 @@ while True:
         cv2.line(frame, (0, y), (width, y), grid_color, grid_thickness)
 
     if len(detected_grids) >= GRID_DETECTION_THRESHOLD:
+        WASTELEVEL = (len(detected_grids) / 9) * 100
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M")
 
         lux = read_light()
-
-        dht_device = adafruit_dht.DHT22(board.D18)
-        temperature_c = dht_device.temperature
-        humidity = dht_device.humidity
-
         luxpercentage = lux_to_percentage(lux)
-    
-        WASTELEVEL = (len(detected_grids) / 9) * 100
+
+        temphumid = read_dht22()
 
         message = (
             f"SIDEK System Status\n"
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temperature_c}°C, {humidity}%\n"
+            f"Temperature & Humidity : {temphumid["temp"]}°C, {temphumid["humidity"]}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
