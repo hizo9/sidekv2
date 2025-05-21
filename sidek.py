@@ -143,7 +143,7 @@ while True:
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.2f}%\n"
-            f"Temperature & Humidity : {temphumid["temp"]}°C, {temphumid["humidity"]}%\n"
+            f"Temperature & Humidity : {temphumid['temp']:.1f}°C, {temphumid['humidity']:.1f}%\n"
             f"Sunny : {luxpercentage}%\n"
             f"Battery Level : {BATTERY_LEVEL}\n"
             )
