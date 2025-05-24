@@ -15,7 +15,9 @@ title = "@evandanendraa - sidek v2 remodel"
 model = YOLO("best_ncnn_model", task="detect")
 
 LOCATION = "Ubung Subak"
-BATTERY_LEVEL = "83%"
+BATTERY_LEVEL = "83"
+TEMPERATURE = "28.0"
+HUMIDITY = "92.1"
 
 MIN_LUX = 1
 MAX_LUX = 65000
@@ -138,16 +140,14 @@ while True:
         lux = read_light()
         luxpercentage = lux_to_percentage(lux)
 
-        temphumid = read_dht22()
-
         message = (
             f"SIDEK System Status\n"
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.1f}%\n"
-            f"Temperature & Humidity : {temphumid['temp']:.1f}°C, {temphumid['humidity']:.1f}%\n"
+            f"Temperature & Humidity : {TEMPERATURE}°C, {HUMIDITY}%\n"
             f"Sunny : {lux} Lux, {luxpercentage:.1f}%\n"
-            f"Battery Level : {BATTERY_LEVEL}\n"
+            f"Battery Level : {BATTERY_LEVEL}%\n"
             )
 
         if not notification_sent:
