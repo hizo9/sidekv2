@@ -11,7 +11,7 @@ from datetime import datetime
 from ultralytics import YOLO
 
 # Configs
-title = "@evandanendraa - sidek v2"
+title = "@evandanendraa - sidek v2 remodel"
 model = YOLO("best_ncnn_model", task="detect")
 
 LOCATION = "Ubung Subak"

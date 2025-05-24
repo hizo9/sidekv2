@@ -1,6 +1,6 @@
 description: Ultralytics YOLO11n model trained on customdataset.yaml
 author: Ultralytics
-date: '2025-04-04T22:16:37.975035'
+date: '2025-05-23T22:18:10.420579'
 version: 8.3.99
 license: AGPL-3.0 License (https://ultralytics.com/license)
 docs: https://docs.ultralytics.com
@@ -11,7 +11,7 @@ imgsz:
 - 640
 - 640
 names:
-  0: trash
+  0: Trash
 args:
   batch: 1
   half: false
