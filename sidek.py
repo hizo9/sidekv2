@@ -18,6 +18,8 @@ LOCATION = "Ubung Subak"
 BATTERY_LEVEL = "83"
 TEMPERATURE = "28.0"
 HUMIDITY = "92.1"
+LUX = "140.2"
+LUXPERCENTAGE = "2.8"
 
 MIN_LUX = 1
 MAX_LUX = 65000
@@ -137,16 +139,13 @@ while True:
         now = datetime.now()
         formatted_time = now.strftime("%Y-%m-%d %H:%M")
 
-        lux = read_light()
-        luxpercentage = lux_to_percentage(lux)
-
         message = (
             f"SIDEK System Status\n"
             f"Time : {formatted_time}\n"
             f"Location : {LOCATION}\n"
             f"Waste Level : {WASTELEVEL:.1f}%\n"
             f"Temperature & Humidity : {TEMPERATURE}°C, {HUMIDITY}%\n"
-            f"Sunny : {lux} Lux, {luxpercentage:.1f}%\n"
+            f"Sunny : {LUX} Lux, {LUXPERCENTAGE}%\n"
             f"Battery Level : {BATTERY_LEVEL}%\n"
             )
 
