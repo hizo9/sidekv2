@@ -6,5 +6,7 @@
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/hizo9/sidek">
 </div>
 
-## SIDEK V2
+<br>
+
+## 🧾 SIDEK V2
 Sensor-Based Intelligent Detector for Waste Material in Ricefield Irrigation (Subak)
