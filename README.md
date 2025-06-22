@@ -15,6 +15,12 @@ A smart environmental monitoring system that combines real-time object detection
 
 <br>
 
+## 🔔 Notes
+- This project uses [Grid Object Detection](https://github.com/hizo9/gridobjectdetection) as its core system for spatial analysis, dividing the scene into a 3x3 grid to monitor object occupancy in real time.
+- Grid-based detection enables efficient tracking of spatial distribution, supporting automated responses like alerting when predefined thresholds are met.
+
+<br>
+
 ## ✨ Features
 - 🖥️ Real-time object detection using YOLO
 - 🌐 Sensor integration: DHT22 and BH1750
