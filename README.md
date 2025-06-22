@@ -47,5 +47,7 @@ A smart environmental monitoring system that combines real-time object detection
 - 🗑️ Tracking waste in waterways
 - 🏙️ Smart city & environmental systems
 
+<br>
+
 ## 📷 Project Overview
 ![screenshot1](https://i.imgur.com/eylMjqP.jpeg)
